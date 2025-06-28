@@ -157,7 +157,7 @@
     </div>
     </header>
 
-    <div class="aside_welcome">
+    <div class="aside_welcome reveal">
         <div class="aside_welcome_text">
             <h4>QUALITÈ & BON PRIX !</h4>
             <h1>Bienvenue Sur Koundoul Shop</h1>
@@ -168,7 +168,7 @@
         </div>
         <div class="aside_welcome_image"><img src="photo/icon_koundoul_Shop.ico" alt="logo de Koundoul Shop"></div>
     </div>
-    <div class="bande_rouge">
+    <div class="bande_rouge reveal">
         <div class="bande_slide active">
             <div class="bande_item">
                 <i class="fas fa-fire"></i>  
@@ -194,9 +194,9 @@
             <span class="bande_rouge_dot"></span>
         </div>
     </div>
-    <div class="container_black" id="galery">
-        <div class="container_galery">
-            <div class="container_galery_div">
+    <div class="container_black reveal" id="galery">
+        <div class="container_galery reveal">
+            <div class="container_galery_div reveal">
                 <div class="container_galery_div_pic">
                     <a href="pages/pageVetement.html"><img src="photo/vetements/t-shirt/T-SHIRT.jpg" alt="PIC T-SHIRT" ></a>
                 </div>
@@ -206,7 +206,7 @@
                     </a>
                 </div>
             </div>
-            <div class="container_galery_div">
+            <div class="container_galery_div reveal">
                 <div class="container_galery_div_pic">
                     <a href="pages/pageVetement.html"><img src="photo/vetements/tenu/ENSEMBLE.jpg" alt="PIC ENSEMBLE" ></a>
                 </div>
@@ -216,7 +216,7 @@
                     </a>
                 </div>
             </div>
-            <div class="container_galery_div">
+            <div class="container_galery_div reveal">
                 <div class="container_galery_div_pic">
                     <a href="pages/pageAccessoires.html"><img src="photo/accessoires/accessoires-1.jpg" alt="PIC Accessoires" ></a>
                 </div>
@@ -226,7 +226,7 @@
                     </a>
                 </div>
             </div>
-            <div class="container_galery_div">
+            <div class="container_galery_div reveal">
                 <div class="container_galery_div_pic">
                     <a href="pages/pageChaussures.html"><img src="photo/chaussures/chaussures-11.jpg" alt="PIC Chaussures" ></a>
                 </div>
@@ -239,20 +239,20 @@
         </div>
     </div>
     <!-- Section Témoignages -->
-    <section class="testimonial-section">
+    <section class="testimonial-section reveal">
         <div class="testimonial-container">
             <h2 class="testimonial-title">Témoignages de clients</h2>
 
-            <div class="testimonial-cards">
+            <div class="testimonial-cards reveal">
                 <div class="testimonial-card">
-                    <div class="testimonial-client-name">ABDOU GAYE</div>
+                    <div class="testimonial-client-name">MBODJ FALL</div>
                     <div class="testimonial-text">
                         <i class="fas fa-quote-left"></i>
-                        Excellent produit ! J'ai adoré la qualité et la livraison rapide.
+                        Excellent ! flexible, simple, rapide et fiable.
                         <i class="fas fa-quote-right"></i>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card reveal">
                     <div class="testimonial-client-name">CHEIKH KANDJI</div>
                     <div class="testimonial-text">
                         <i class="fas fa-quote-left"></i>
@@ -260,7 +260,7 @@
                         <i class="fas fa-quote-right"></i>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card reveal">
                     <div class="testimonial-client-name">ASTOU POUYE</div>
                     <div class="testimonial-text">
                         <i class="fas fa-quote-left"></i>
@@ -271,7 +271,7 @@
             </div>
 
             <!-- Formulaire de témoignage -->
-            <div class="testimonial-form" id="testimonial-form">
+            <div class="testimonial-form reveal" id="testimonial-form">
                 <h3>Ajouter un témoignage</h3>
                 <form id="testimonial-form-content">
                     <input type="text" name="nom" id="nom" placeholder="Votre Nom" required>
@@ -338,15 +338,8 @@
                 setInterval(changeSlide, 3500);
             });
     </script>
-
-
-
-    
-    
-
-
     <footer>
-        <div class="div_footer_section_horizontal">
+        <div class="div_footer_section_horizontal reveal">
             <div class="slide active">
                 <div class="div_footer_section_horizontal_delivery">
                     <div class="div_footer_section_horizontal_delivery_icon">
@@ -357,7 +350,7 @@
                 </div>
             </div>
             
-            <div class="slide">
+            <div class="slide reveal">
                 <div class="div_footer_section_horizontal_client">
                     <div class="div_footer_section_horizontal_client_icon">
                         <i class="fas fa-headset"></i>
@@ -369,13 +362,13 @@
         </div>
         
         <!-- Indicateurs -->
-        <div class="dots">
+        <div class="dots reveal">
             <span class="dot active"></span>
             <span class="dot"></span>
         </div>
         
         
-        <div class="div_footer_section_link">
+        <div class="div_footer_section_link reveal">
             <div class="div_footer_section_link_aboutUs">
                 <a href="pages/pageAccueil.html" id="aboutUs"><img src="../photo/icon_koundoul_Shop.ico" alt="logo"  class="div_footer_section_link_aboutUs_logo"></a>
                 <p>Koundoul Shop est une entreprise <br>baser au Sénegal particulierement à Dakar <br>qui evolue depuis 2020 avec de bonne resultat <br> avec satisfaction du client rapide efficace,<br>  leur boutique preferer c'est ici.</p>
@@ -405,5 +398,23 @@
     </footer> 
     <script src="javascript/header.js" defer></script>
     <script src="javascript/slider.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const reveals = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Ne l'observe plus → pas de disparition
+            }
+            });
+        });
+
+        reveals.forEach(el => {
+            observer.observe(el);
+        });
+        });
+    </script>
 </body>
 </html>

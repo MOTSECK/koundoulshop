@@ -1,4 +1,14 @@
 /* content  */
+@keyframes fadeIn{
+    from{
+        opacity : 0 ;
+        transform : translateY(40x);
+    }
+    to{
+        opacity : 8 ;
+        transform : translateY(0);
+    }   
+}
 .aside_welcome_text{
     padding-bottom: 50px;
     width: 50%;
