@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Chaussure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #282828;
+        }
+
+        #product-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #product-form input, #product-form select, #product-form button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        #product-form button {
+            background-color: #FC0100;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #product-form button:hover {
+            background-color: #d00000;
+        }
+
+        #search-bar {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            width: 60%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #admin-product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .product-item {
+            background-color: #fff;
+            border-radius: 8px;
+            width: 200px;
+            margin: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-item p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .product-item button {
+            background-color: #FC0100;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-item button:hover {
+            background-color: #d00000;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            color: #FC0100;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestion des Chaussures</h1>
+    <h2>Ajouter un Produit</h2>
+    <form id="product-form">
+        <input type="file" id="image" accept="image/*" required>
+        <input type="text" id="nom" placeholder="Nom du produit" required>
+        <input type="number" id="prix" placeholder="Prix" required>
+        <select id="categorie">
+            <option value="chaussure">Chaussure</option>
+        </select>
+        <select id="type">
+            <option value="Fashion">Fashion</option>
+            <option value="Cuire">Cuire</option>
+            <option value="Autres">Autres</option>
+        </select>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <input type="text" id="search-bar" placeholder="Rechercher un produit...">
+
+    <h2>Produits</h2>
+    <div id="admin-product-list"></div>
+    <p class="message" id="no-products-message">Aucun produit trouvé.</p>
+
+    <script>
+
+            const productList = document.getElementById("admin-product-list");
+            const searchBar = document.getElementById("search-bar");
+            const noProductsMessage = document.getElementById("no-products-message");
+            function deleteProduct(id) {
+                if (!confirm("Voulez-vous vraiment supprimer ce produit ?")) {
+                    return; // Annule si l'utilisateur clique sur "Annuler"
+                }
+
+                fetch(`http://localhost:5000/produits/${id}`, { 
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la suppression du produit");
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    alert("Produit supprimé avec succès !");
+                    fetchProducts(); // Recharge la liste des produits après suppression
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
+                    alert("Une erreur est survenue lors de la suppression du produit.");
+                });
+            }
+
+            function fetchProducts() {
+                fetch("http://localhost:5000/produits/chaussure")
+                    .then(response => response.json())
+                    .then(data => {
+                        productList.innerHTML = "";
+                        if (data.length === 0) {
+                            noProductsMessage.style.display = "block";
+                        } else {
+                            noProductsMessage.style.display = "none";
+                        }
+                        data.forEach(product => {
+                            const div = document.createElement("div");
+                            div.classList.add("product-item");
+                            div.innerHTML = `
+                                <img src="http://localhost:5000${product.image}" width="150">
+                                <p>${product.nom} - ${product.prix} FCFA</p>
+                                <button onclick="deleteProduct(${product.id})">Supprimer</button>
+                            `;
+                            productList.appendChild(div);
+                        });
+                    });
+            }
+
+
+            document.getElementById("product-form").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append("nom", document.getElementById("nom").value);
+                formData.append("prix", document.getElementById("prix").value);
+                formData.append("categorie", document.getElementById("categorie").value);
+                formData.append("type", document.getElementById("type").value);
+                formData.append("image", document.getElementById("image").files[0]);
+
+                fetch("http://localhost:5000/produits", {
+                    method: "POST",
+                    body: formData
+                }).then(() => {
+                    alert("Produit ajouté avec succès !");
+                    fetchProducts();
+                });
+            });
+
+            searchBar.addEventListener("input", function () {
+                const searchTerm = searchBar.value.toLowerCase();
+                document.querySelectorAll(".product-item").forEach(item => {
+                    const name = item.querySelector("p").innerText.toLowerCase();
+                    item.style.display = name.includes(searchTerm) ? "block" : "none";
+                });
+            });
+
+            fetchProducts();
+
+    </script>
+</body>
+</html>
